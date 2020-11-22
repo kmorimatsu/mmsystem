@@ -19,7 +19,7 @@ void _i2c_wait(int times){
 		3. Output L when ourput mode.
 */
 void i2c_init(){
-	// Use degital but not analog
+	// Use digital but not analog
 	I2C_SCL_ANSEL_CLR=I2C_SCL_MASK;
 	I2C_SDA_ANSEL_CLR=I2C_SDA_MASK;
 	// All input first
@@ -28,6 +28,9 @@ void i2c_init(){
 	// Latch is always L
 	I2C_SCL_LAT_CLR=I2C_SCL_MASK;
 	I2C_SDA_LAT_CLR=I2C_SDA_MASK;
+	// Weak pull up
+	I2C_SCL_CNPU_SET=I2C_SCL_MASK;
+	I2C_SDA_CNPU_SET=I2C_SDA_MASK;
 }
 
 int i2c_write(char addr, char* data, int len){
@@ -65,17 +68,22 @@ int i2c_error(){
 	return i2c_error_val;
 }
 void _i2c_start(){
+	i2c_wait();
+	i2c_wait();
+	I2C_SDA_TRIS_SET=I2C_SDA_MASK;
+	i2c_wait();
+	I2C_SCL_TRIS_SET=I2C_SCL_MASK;
+	i2c_wait();
 	I2C_SDA_TRIS_CLR=I2C_SDA_MASK;
 	i2c_wait();
-	i2c_wait();
 	I2C_SCL_TRIS_CLR=I2C_SCL_MASK;
-	i2c_wait();
 	i2c_wait();
 }
 void _i2c_stop(){
 	I2C_SDA_TRIS_CLR=I2C_SDA_MASK;
 	i2c_wait();
 	I2C_SCL_TRIS_SET=I2C_SCL_MASK;
+	i2c_wait();
 	i2c_wait();
 	I2C_SDA_TRIS_SET=I2C_SDA_MASK;
 	i2c_wait();
@@ -90,13 +98,13 @@ void _i2c_stop(){
 	3. Fall CLK and wait
 */
 
-#define _i2c_write_bit(bit) do {\
-		if (bit) I2C_SDA_TRIS_SET=I2C_SDA_MASK; else I2C_SDA_TRIS_CLR=I2C_SDA_MASK;\
+#define _i2c_write_bit(bitdata) do {\
+		if (bitdata) I2C_SDA_TRIS_SET=I2C_SDA_MASK; else I2C_SDA_TRIS_CLR=I2C_SDA_MASK;\
 		i2c_wait();\
 		I2C_SCL_TRIS_SET=I2C_SCL_MASK;\
 		i2c_wait();\
-		i2c_wait();\
 		while(!(I2C_SCL_PORT & I2C_SCL_MASK));\
+		i2c_wait();\
 		I2C_SCL_TRIS_CLR=I2C_SCL_MASK;\
 		i2c_wait();\
 	} while(0)
@@ -109,14 +117,14 @@ void _i2c_stop(){
 	4. Read DAT and wait
 */
 
-#define _i2c_read_bit(bit) do{\
+#define _i2c_read_bit(bitdata) do{\
 		I2C_SDA_TRIS_SET=I2C_SDA_MASK;\
 		i2c_wait();\
 		I2C_SCL_TRIS_SET=I2C_SCL_MASK;\
 		i2c_wait();\
-		i2c_wait();\
-		bit=(I2C_SDA_PORT & I2C_SDA_MASK) ? 1:0;\
 		while(!(I2C_SCL_PORT & I2C_SCL_MASK));\
+		i2c_wait();\
+		bitdata=(I2C_SDA_PORT & I2C_SDA_MASK) ? 1:0;\
 		I2C_SCL_TRIS_CLR=I2C_SCL_MASK;\
 		i2c_wait();\
 	} while(0)
@@ -135,22 +143,23 @@ char _i2c_write(char data){
 	return ack;
 }
 char _i2c_read(char ack){
-	char data,bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
-	_i2c_read_bit(bit);
-	data=(data<<1)|bit;
+	char data,bitdata;
+	_i2c_read_bit(bitdata);
+	data=bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
+	_i2c_read_bit(bitdata);
+	data=(data<<1)|bitdata;
 	_i2c_write_bit(ack);
+    return data;
 }
