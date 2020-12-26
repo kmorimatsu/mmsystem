@@ -5,45 +5,6 @@
 #ifndef I2C_H
 #define	I2C_H
 
-//#define I2C_SYSTEM_CLOCK 500000
-//#define I2C_SYSTEM_CLOCK 750000
-//#define I2C_SYSTEM_CLOCK 1000000
-//#define I2C_SYSTEM_CLOCK 1500000
-//#define I2C_SYSTEM_CLOCK 2000000
-//#define I2C_SYSTEM_CLOCK 3000000
-//#define I2C_SYSTEM_CLOCK 4000000
-//#define I2C_SYSTEM_CLOCK 6000000
-#define I2C_SYSTEM_CLOCK 8000000
-//#define I2C_SYSTEM_CLOCK 12000000
-//#define I2C_SYSTEM_CLOCK 16000000
-//#define I2C_SYSTEM_CLOCK 24000000
-
-/*
-	Select SCL and SDA ports here
-*/
-
-#define I2C_SCL_RA0
-//#define I2C_SCL_RA1
-//#define I2C_SCL_RA2
-//#define I2C_SCL_RA3
-//#define I2C_SCL_RA4
-//#define I2C_SCL_RB0
-//#define I2C_SCL_RB1
-//#define I2C_SCL_RB2
-//#define I2C_SCL_RB3
-//#define I2C_SCL_RC9
-
-//#define I2C_SDA_RA0
-#define I2C_SDA_RA1
-//#define I2C_SDA_RA2
-//#define I2C_SDA_RA3
-//#define I2C_SDA_RA4
-//#define I2C_SDA_RB0
-//#define I2C_SDA_RB1
-//#define I2C_SDA_RB2
-//#define I2C_SDA_RB3
-//#define I2C_SDA_RC9
-
 #ifdef I2C_SCL_RA0
 	#define I2C_SCL_MASK 0x01
 	#define I2C_SCL_TRIS_CLR TRISACLR
@@ -232,40 +193,40 @@
 */
 
 void _i2c_wait(int times);
-#if I2C_SYSTEM_CLOCK==500000
+#if MM_SYSTEM_CLOCK==500000
     #define i2c_wait() asm volatile("nop")
 #endif
-#if I2C_SYSTEM_CLOCK==750000
+#if MM_SYSTEM_CLOCK==750000
     #define i2c_wait()  asm volatile("nop")
 #endif
-#if I2C_SYSTEM_CLOCK==1000000
+#if MM_SYSTEM_CLOCK==1000000
     #define i2c_wait()  do { asm volatile("nop"); asm volatile("nop"); } while(0)
 #endif
-#if I2C_SYSTEM_CLOCK==1500000
+#if MM_SYSTEM_CLOCK==1500000
     #define i2c_wait()  do { asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); } while(0)
 #endif
-#if I2C_SYSTEM_CLOCK==2000000
+#if MM_SYSTEM_CLOCK==2000000
     #define i2c_wait()  do { asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); asm volatile("nop"); } while(0)
 #endif
-#if I2C_SYSTEM_CLOCK==3000000
+#if MM_SYSTEM_CLOCK==3000000
     #define i2c_wait()  _i2c_wait(1)
 #endif
-#if I2C_SYSTEM_CLOCK==4000000
+#if MM_SYSTEM_CLOCK==4000000
     #define i2c_wait()  _i2c_wait(2)
 #endif
-#if I2C_SYSTEM_CLOCK==6000000
+#if MM_SYSTEM_CLOCK==6000000
     #define i2c_wait()  _i2c_wait(4)
 #endif
-#if I2C_SYSTEM_CLOCK==8000000
+#if MM_SYSTEM_CLOCK==8000000
     #define i2c_wait()  _i2c_wait(7)
 #endif
-#if I2C_SYSTEM_CLOCK==12000000
+#if MM_SYSTEM_CLOCK==12000000
     #define i2c_wait()  _i2c_wait(12)
 #endif
-#if I2C_SYSTEM_CLOCK==16000000
+#if MM_SYSTEM_CLOCK==16000000
     #define i2c_wait()  _i2c_wait(17)
 #endif
-#if I2C_SYSTEM_CLOCK==24000000
+#if MM_SYSTEM_CLOCK==24000000
     #define i2c_wait()  _i2c_wait(27)
 #endif
 

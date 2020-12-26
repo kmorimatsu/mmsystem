@@ -1,4 +1,5 @@
 #include <xc.h>
+#include "config.h"
 #include "i2c.h"
 
 /*
