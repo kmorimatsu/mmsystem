@@ -7,12 +7,13 @@
 
 #include <xc.h>
 #include <sys/attribs.h>
+#include "config.h"
 #include "led7seg.h"
 
 // Timer 1 interruption frequency must be about 2000 Hz
 // As a result, one round of 7 seg display occurs every 16m seconds.
 // This frequency also works for anti-chattering of key inputs.
-#define TIMER1COUNT (4096)
+#define TIMER1COUNT (4096*MM_SYSTEM_CLOCK/8000000)
 
 volatile unsigned char g_keydata[8];
 

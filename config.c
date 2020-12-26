@@ -15,10 +15,7 @@
 */
 
 // FDEVOPT
-//#pragma config ALTCMP = OFF             // Alternate Comparator1 Pins Location Enable bit (Primary C1INB pin is used)
 #pragma config SOSCHP = OFF             // Secondary Oscillator High Power Enable bit (SOSC oprerates in normal power mode.)
-//#pragma config ALTI2C = OFF             // Alternate I2C1 Pins Location Enable bit (Primary I2C1 pins are used)
-//#pragma config USERID = USERID          // User ID bits (User ID bits)
 
 // FICD
 #pragma config JTAGEN = OFF             // JTAG Enable bit (JTAG is disabled)
@@ -74,6 +71,26 @@
 	#pragma config FNOSC = FRCDIV           // Internal Fast RC (FRC) Oscillator divided by FRCDIV<2:0> bits (FRCDIV)
 	#define MM_SPLLCON 0x10000
 	#define MM_OSCCON 0x00
+#endif
+#if MM_SYSTEM_CLOCK==750000
+	#pragma config FNOSC = PLL              //Oscillator Selection bits->Primary or FRC oscillator with PLL
+	#define MM_SPLLCON 0x5010080
+	#define MM_OSCCON 0x101
+#endif
+#if MM_SYSTEM_CLOCK==1500000
+	#pragma config FNOSC = PLL              //Oscillator Selection bits->Primary or FRC oscillator with PLL
+	#define MM_SPLLCON 0x4010080
+	#define MM_OSCCON 0x101
+#endif
+#if MM_SYSTEM_CLOCK==3000000
+	#pragma config FNOSC = PLL              //Oscillator Selection bits->Primary or FRC oscillator with PLL
+	#define MM_SPLLCON 0x3010080
+	#define MM_OSCCON 0x101
+#endif
+#if MM_SYSTEM_CLOCK==6000000
+	#pragma config FNOSC = PLL              //Oscillator Selection bits->Primary or FRC oscillator with PLL
+	#define MM_SPLLCON 0x2010080
+	#define MM_OSCCON 0x101
 #endif
 #if MM_SYSTEM_CLOCK==12000000
 	#pragma config FNOSC = PLL              //Oscillator Selection bits->Primary or FRC oscillator with PLL

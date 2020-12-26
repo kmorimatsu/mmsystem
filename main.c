@@ -33,7 +33,14 @@ void main(){
 
     // Infinite loop until reset switch will be pressed
     while(1){
+        int i;
         led7seg_dec4(1234);
-        asm volatile("wait");
+        for(i=0;i<2000;i++) asm volatile("wait");
+        led7seg_dec4(2341);
+        for(i=0;i<2000;i++) asm volatile("wait");
+        led7seg_dec4(3412);
+        for(i=0;i<2000;i++) asm volatile("wait");
+        led7seg_dec4(4123);
+        for(i=0;i<2000;i++) asm volatile("wait");
     }
 }
